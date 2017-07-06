@@ -49,7 +49,7 @@
         android:layout_marginEnd="8dp" />
 
     <ImageButton
-        android:id="@+id/goMainPage"
+        android:id="@+id/btnSignInLogin"
         android:layout_width="215dp"
         android:layout_height="40dp"
         android:layout_marginTop="100dp"
@@ -62,19 +62,19 @@
 
     <!-- Link to Login Screen -->
 
-    <ImageView
-        android:id="@+id/btn_signup"
+    <ImageButton
+        android:id="@+id/btnSignupLogin"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginBottom="69dp"
+        android:layout_marginTop="100dp"
         android:background="@null"
         android:src="@drawable/createbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="100dp"
-        app:layout_constraintTop_toBottomOf="@+id/goMainPage"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignInLogin"
         app:layout_constraintVertical_bias="0.476" />
 
     <ImageView

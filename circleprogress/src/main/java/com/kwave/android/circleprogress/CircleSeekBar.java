@@ -97,27 +97,27 @@ public class CircleSeekBar extends View {
     private void initPaints() {
         mDefShadowOffset = getDimen(R.dimen.def_shadow_offset);
         /**
-         * 圆环画笔
+         * 圆环画笔     // Circle brush         외부의 원을 그림
          */
-        mWheelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mWheelPaint.setColor(mUnreachedColor);
-        mWheelPaint.setStyle(Paint.Style.STROKE);
-        mWheelPaint.setStrokeWidth(mUnreachedWidth);
-        if (isHasWheelShadow) {
-            mWheelPaint.setShadowLayer(mWheelShadowRadius, mDefShadowOffset, mDefShadowOffset, Color.DKGRAY);
-        }
+//        mWheelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        mWheelPaint.setColor(mUnreachedColor);
+//        mWheelPaint.setStyle(Paint.Style.STROKE);
+//        mWheelPaint.setStrokeWidth(mUnreachedWidth);
+//        if (isHasWheelShadow) {
+//            mWheelPaint.setShadowLayer(mWheelShadowRadius, mDefShadowOffset, mDefShadowOffset, Color.DKGRAY);
+//        }
         /**
-         * 选中区域画笔
+         * 选中区域画笔       // Check the area brush     // 외부의 점이 지나가면 생기는 그림
          */
         mReachedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mReachedPaint.setColor(mReachedColor);
+        mReachedPaint.setColor(Color.argb(00,50,58,61));        // 색을 투명하게 하여 보이지 않음
         mReachedPaint.setStyle(Paint.Style.STROKE);
         mReachedPaint.setStrokeWidth(mReachedWidth);
         if (isHasReachedCornerRound) {
             mReachedPaint.setStrokeCap(Paint.Cap.ROUND);
         }
         /**
-         * 锚点画笔
+         * 锚点画笔     // 앵커 브러쉬       // 외부의 점
          */
         mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPointerPaint.setColor(mPointerColor);
@@ -126,7 +126,7 @@ public class CircleSeekBar extends View {
             mPointerPaint.setShadowLayer(mPointerShadowRadius, mDefShadowOffset, mDefShadowOffset, Color.DKGRAY);
         }
         /**
-         * 选中区域两头的圆角画笔
+         * 选中区域两头的圆角画笔      // Select the rounded brush at both ends of the area
          */
         mReachedEdgePaint = new Paint(mReachedPaint);
         mReachedEdgePaint.setStyle(Paint.Style.FILL);
@@ -229,13 +229,13 @@ public class CircleSeekBar extends View {
             }
             canvas.drawBitmap(mCacheBitmap, 0, 0, null);
         } else {
-            canvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint);
+//            canvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint);                // 여기를 없애니 외부의 원이 사라짐
         }
 
-        //画选中区域
+        //画选中区域     // Draw the selected area
         canvas.drawArc(new RectF(left, top, right, bottom), -90, (float) mCurAngle, false, mReachedPaint);
 
-        //画锚点
+        //画锚点       // Draw anchor point
         canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
     }
 
@@ -243,7 +243,7 @@ public class CircleSeekBar extends View {
         mCacheBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         mCacheCanvas = new Canvas(mCacheBitmap);
 
-        //画环
+        //画环        // Painting ring
         mCacheCanvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint);
     }
 
@@ -252,13 +252,13 @@ public class CircleSeekBar extends View {
         float x = event.getX();
         float y = event.getY();
         if (isCanTouch && (event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y))) {
-            // 通过当前触摸点搞到cos角度值
+            // 通过当前触摸点搞到cos角度值      // Find the cos angle value from the current touch point
             float cos = computeCos(x, y);
-            // 通过反三角函数获得角度值
+            // 通过反三角函数获得角度值     // The angle value is obtained by the inverse trigonometric function
             double angle;
-            if (x < getWidth() / 2) { // 滑动超过180度
+            if (x < getWidth() / 2) { // 滑动超过180度       Slide more than 180 degrees
                 angle = Math.PI * RADIAN + Math.acos(cos) * RADIAN;
-            } else { // 没有超过180度
+            } else { // 没有超过180度        // No more than 180 degrees
                 angle = Math.PI * RADIAN - Math.acos(cos) * RADIAN;
             }
             if (isScrollOneCircle) {
@@ -325,7 +325,7 @@ public class CircleSeekBar extends View {
     }
 
     /**
-     * 拿到倾斜的cos值
+     * 拿到倾斜的cos值    // Get the tilted cos value
      */
     private float computeCos(float x, float y) {
         float width = x - getWidth() / 2;

@@ -1,18 +1,13 @@
 package com.kwave.android.testtest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,122 +15,132 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity{
-//    TextView textView;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        textView = (TextView) findViewById(R.id.textView);
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, TimerActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-//}
+public class MainActivity extends AppCompatActivity implements MainDialog.CallBack,View.OnClickListener{
+
 
     public static final int SET_DONE = 1;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
-    ImageButton goMainPage;
-    ImageView btnSignup;
-    EditText id, pw;
+    ImageButton btnSignIn;
+    ImageButton btnSignUp;
+    EditText editId, editPw;
+    String email,password;
 
     String administ = "관리자";
 
-    //    ProgressDialog progress;        // 프로그레스 다이얼 생성
-    //프로그레스다이얼은 실행시 내부에서 핸들러가 있어 sendMessage가 동작된다.
-    // Thread에서 호출하기 위한 handler
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {    // 핸들러는 루퍼의 메세지큐로 아래 메세지를 전달하고 받는다.
-            switch (msg.what){      /// what은 무엇을 처리할지에 대한 구분자
-                // 메세지큐에서 메세지를 하나 꺼내서 Runnable 객체가 존재하면 run을 실행하고 존재하지 않으면 mHandler의 handleMessage를 호출한다.
-                case SET_DONE :
-//                    setDone();
-                    break;
-            }
-        }
-    };
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         setView();
-
-//Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-//        if (auth.getCurrentUser() != null) {
-//            startActivity(new Intent(MainActivity.this, DialogTest.class));
-//            finish();
-//        }
-        btnSignup.setOnClickListener(new View.OnClickListener() {       // 회원가입
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        goMainPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = id.getText().toString();
-                final String password = pw.getText().toString();
-
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
-                    return;
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    Toast.makeText(MainActivity.this, "환영합니다", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "뭔가잘못됬습니다", Toast.LENGTH_SHORT).show();
                 }
-
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                //authenticate user
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    // there was an error
-                                    if (password.length() < 6) {
-                                        pw.setError(getString(R.string.minimum_password));
-                                    } else {
-                                        Toast.makeText(MainActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
-                                    Intent intent = new Intent(MainActivity.this, TimerActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        });
             }
-        });
+        };
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSignInLogin:
+                signInOnClick();
+                break;
+            case R.id.btnSignupLogin:
+                signUpOnClick();
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        auth.removeAuthStateListener(authStateListener);
+    }
 
     private void setView(){
-        goMainPage = (ImageButton) findViewById(R.id.goMainPage);
-        id = (EditText) findViewById(R.id.id);
-        pw = (EditText) findViewById(R.id.pw);
-        btnSignup = (ImageView) findViewById(R.id.btn_signup);
+        btnSignIn = (ImageButton) findViewById(R.id.btnSignInLogin);
+        editId = (EditText) findViewById(R.id.id);
+        editPw = (EditText) findViewById(R.id.pw);
+        btnSignUp = (ImageButton) findViewById(R.id.btnSignupLogin);
+        btnSignUp.setOnClickListener(this);
+        btnSignIn.setOnClickListener(this);
+    }
+    private void signIn(String id, String pw){
+        auth.signInWithEmailAndPassword(id,pw)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()){
+                            Toast.makeText(MainActivity.this, "잘못되었습니다", Toast.LENGTH_SHORT).show();
+                            editId.setText("");
+                            editPw.setText("");
+                        }else{
+                            Toast.makeText(MainActivity.this, "로그인 되었습니다", Toast.LENGTH_SHORT).show();
+                            goTimerActivity();
+                        }
+                    }
+                });
+    }
+    private void goTimerActivity(){
+        Intent intent = new Intent(this,TimerActivity.class);
+        startActivity(intent);
+        finish();
     }
 
+    private void signInOnClick(){
+        email = editId.getText().toString();
+        password = editPw.getText().toString();
+        signIn(email,password);
+    }
+
+    private void signUpOnClick(){
+        final MainDialog dialog = new MainDialog(this);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+            }
+        });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void signUp(String email,String password) {
+        auth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()){
+                            Toast.makeText(MainActivity.this, "잘못됌", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(MainActivity.this, "등록되었음", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
 }

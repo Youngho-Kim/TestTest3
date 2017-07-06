@@ -6,11 +6,11 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.kwave.android.circleprogress.CircleSeekBar;
 
-public class DownLoadActivity extends AppCompatActivity {
+public class TimerActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler() {
         @Override
@@ -22,20 +22,19 @@ public class DownLoadActivity extends AppCompatActivity {
 
     private CircleSeekBar mProgress;
 
-    private TextView mTextView;
-
+    private ImageButton mIBView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_down_load);
+        setContentView(R.layout.activity_timer);
 
         mProgress = (CircleSeekBar) findViewById(R.id.progress);
-        mTextView = (TextView) findViewById(R.id.textview);
-
+        mIBView = (ImageButton) findViewById(R.id.image);
         mProgress.setOnSeekBarChangeListener(new CircleSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onChanged(CircleSeekBar seekbar, int curValue) {    // progresss가 진행 되면서 변경되는 사항들 넣기
-                mTextView.setText((curValue/10)+" 초");     // 원에 들어가는 글자.
+//                mTextView.setText((curValue/10)+" 초");     // 원에 들어가는 글자.
+                mIBView.setImageResource(R.drawable.walking);
             }
         });
 

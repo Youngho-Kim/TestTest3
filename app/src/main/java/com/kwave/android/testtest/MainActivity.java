@@ -10,11 +10,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity{
 //        textView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
+//                Intent intent = new Intent(MainActivity.this, TimerActivity.class);
 //                startActivity(intent);
 //            }
 //        });
@@ -42,14 +41,12 @@ public class MainActivity extends AppCompatActivity{
 //}
 
     public static final int SET_DONE = 1;
-    TextView tv;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
-
-    Button goMainPage, btnSignup, btnReset;
+    ImageButton goMainPage;
+    ImageView btnSignup;
     EditText id, pw;
-    CheckBox admin;
 
     String administ = "관리자";
 
@@ -83,19 +80,13 @@ public class MainActivity extends AppCompatActivity{
 //            startActivity(new Intent(MainActivity.this, DialogTest.class));
 //            finish();
 //        }
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        btnSignup.setOnClickListener(new View.OnClickListener() {       // 회원가입
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SignupActivity.class));
+
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResetPasswordActivity.class));
-            }
-        });
         goMainPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +103,6 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
-
                 //authenticate user
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -122,7 +111,6 @@ public class MainActivity extends AppCompatActivity{
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
-                                progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
                                     if (password.length() < 6) {
@@ -131,7 +119,7 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.makeText(MainActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, TimerActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -143,13 +131,10 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void setView(){
-        goMainPage = (Button) findViewById(R.id.goMainPage);
+        goMainPage = (ImageButton) findViewById(R.id.goMainPage);
         id = (EditText) findViewById(R.id.id);
         pw = (EditText) findViewById(R.id.pw);
-        admin = (CheckBox) findViewById(R.id.admin);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        btnSignup = (ImageView) findViewById(R.id.btn_signup);
     }
 
 

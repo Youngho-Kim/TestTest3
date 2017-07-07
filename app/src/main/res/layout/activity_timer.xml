@@ -7,25 +7,25 @@
     android:background="@drawable/timerbackground"
     tools:context="com.kwave.android.testtest.MainActivity">
 
-        <com.kwave.android.circleprogress.CircleSeekBar
+    <com.kwave.android.circleprogress.CircleSeekBar
         android:id="@+id/progress"
         android:layout_width="246dp"
         android:layout_height="246dp"
         android:layout_centerInParent="true"
         android:padding="8dp"
-            android:background="@drawable/tickmarkscircle"
+        android:background="@drawable/tickmarkscircle"
         app:wheel_reached_width="16dp"
         app:wheel_unreached_width="20dp"
         app:wheel_pointer_radius="6dp"
         app:wheel_can_touch="false"
         app:wheel_max_process="100"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="90dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="90dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <ImageButton
-        android:id="@+id/image"
+        android:id="@+id/imagebtnStart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerInParent="true"
@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/progress"
         android:layout_marginBottom="60dp"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -54,8 +54,8 @@
         android:layout_marginTop="32dp"
         app:layout_constraintHorizontal_bias="0.502" />
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <ImageButton
+        android:id="@+id/imgTimerDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -69,7 +69,7 @@
         app:srcCompat="@drawable/btnsettimer" />
 
     <ImageView
-        android:id="@+id/imageWalk"
+        android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/walking"
@@ -83,13 +83,13 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <ImageView
-        android:id="@+id/imageRunning"
+        android:id="@+id/imageView5"
         android:layout_width="116dp"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/runing"
-        android:layout_alignBottom="@+id/imageWalk"
-        android:layout_toRightOf="@+id/image"
-        android:layout_toEndOf="@+id/image"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_toRightOf="@+id/imagebtnStart"
+        android:layout_toEndOf="@+id/imagebtnStart"
         android:layout_marginTop="90dp"
         app:layout_constraintTop_toBottomOf="@+id/progress"
         android:layout_marginRight="38dp"
@@ -97,41 +97,42 @@
         android:layout_marginEnd="38dp" />
 
     <TextView
-        android:id="@+id/textRest"
+        android:id="@+id/txtWalkTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="20 Secs"
+        android:text="TextView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/imageWalk"
-        app:layout_constraintRight_toRightOf="@+id/imageWalk"
-        app:layout_constraintTop_toBottomOf="@+id/imageWalk" />
+        app:layout_constraintLeft_toLeftOf="@+id/imageView4"
+        app:layout_constraintRight_toRightOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
-        android:id="@+id/textPlay"
+        android:id="@+id/txtSprintTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="20 Secs"
-        app:layout_constraintLeft_toLeftOf="@+id/imageRunning"
-        app:layout_constraintRight_toRightOf="@+id/imageRunning"
-        app:layout_constraintTop_toBottomOf="@+id/imageRunning" />
+        android:text="TextView"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView5"
+        app:layout_constraintRight_toRightOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <ImageView
-        android:id="@+id/btnGoInfo"
+    <ImageButton
+        android:id="@+id/btnGoList"
         android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="32dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/progress"
+        app:layout_constraintHorizontal_bias="0.818"
         app:layout_constraintLeft_toRightOf="@+id/imageView2"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/btn_time_to_imfo" />
 </android.support.constraint.ConstraintLayout>

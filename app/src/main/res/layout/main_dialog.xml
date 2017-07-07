@@ -15,6 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/btn_singup"
+        android:onClick="dialogSignUpOnclick"
         android:text="Button" />
 
     <EditText

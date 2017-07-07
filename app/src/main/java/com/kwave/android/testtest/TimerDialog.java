@@ -3,9 +3,7 @@ package com.kwave.android.testtest;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -17,95 +15,39 @@ public class TimerDialog extends Dialog{
     CallBack callBack;
 
     public TimerDialog(Context context) {
-
         super(context);
         this.callBack=(CallBack) context;
     }
-
     ImageButton imageSetTime;
-    EditText editId, editPw;
+    EditText editWalk, editSprint;
 
-
-
-    private String mode;
-
-    private String text;
+    private String Walk;
+    private String Sprint;
 
 
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.timer_dialog);
-
-
-
-
-        imageSetTime.setOnTouchListener(new View.OnTouchListener() {
-
+        setView();
+        imageSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
-
-            public boolean onTouch(View v, MotionEvent event) {
-
-                text = editId.getText().toString();
-
-                mode = editPw.getText().toString();
-
+            public void onClick(View v) {
+                String tempWalk =editWalk.getText().toString();
+                String tempSprint = editSprint.getText().toString();
+                callBack.timeSet(tempWalk,tempSprint);
                 dismiss();
-
-                return false;
-
             }
-
         });
-
+    }
+    public void setView(){
+        imageSetTime = (ImageButton) findViewById(R.id.imageSetTimeDialog);
+        editWalk = (EditText) findViewById(R.id.editWalkDialog);
+        editSprint =(EditText) findViewById(R.id.editSprintDialog);
     }
 
-
-
-    public String getMode() {
-
-        return mode;
-
-    }
-
-
-
-    public void setMode(String mode) {
-
-        this.mode = mode;
-
-        editPw.setText(mode);
-        editPw.setFocusable(true);
-
-    }
-
-
-
-    public String getText() {
-
-        return text;
-
-    }
-
-
-
-    public void setText(String text) {
-
-        this.text = text;
-
-        editId.setText(text);
-
-        editId.setFocusable(true);
-
-    }
     interface CallBack{
-        void signUp(String email,String password);
+        void timeSet(String walkTime, String sprintTime);
     }
 }
-

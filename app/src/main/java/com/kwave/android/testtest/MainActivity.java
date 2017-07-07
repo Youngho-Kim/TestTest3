@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,22 +15,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.kwave.android.testtest.domain.UserInformation;
 
 public class MainActivity extends AppCompatActivity implements MainDialog.CallBack,View.OnClickListener{
 
 
-    public static final int SET_DONE = 1;
-    private ProgressBar progressBar;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("userInfo");
     ImageButton btnSignIn;
     ImageButton btnSignUp;
     EditText editId, editPw;
     String email,password;
-
-    String administ = "관리자";
-
+    public static String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +89,12 @@ public class MainActivity extends AppCompatActivity implements MainDialog.CallBa
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
                             Toast.makeText(MainActivity.this, "잘못되었습니다", Toast.LENGTH_SHORT).show();
-                            editId.setText("");
-                            editPw.setText("");
                         }else{
                             Toast.makeText(MainActivity.this, "로그인 되었습니다", Toast.LENGTH_SHORT).show();
+                            UserInformation userInformation = new UserInformation("10","10","10","10");
+                            String childKey = myRef.push().getKey();
+                            key = childKey;
+                            myRef.child(childKey).setValue(userInformation);
                             goTimerActivity();
                         }
                     }
